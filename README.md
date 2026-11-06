@@ -1,54 +1,93 @@
 # Business Listings Dashboard
 
-A Business Listings Dashboard built using React.js, FastAPI, and MySQL. It helps users explore business listings through city-wise and category-wise charts, summary cards, and a searchable business table.
+A full-stack web application to collect, store, manage, and visualize business listing data from OpenStreetMap using FastAPI, MySQL, React.js, and Recharts.
 
-## Tech Stack
+## 🚀 Project Overview
 
-**Frontend**
+The Business Listings Dashboard provides a centralized platform to manage business listing records across different cities and categories.
+
+It includes:
+- Business listing data collection using OpenStreetMap.
+- FastAPI backend for REST API operations.
+- MySQL database for storing business records.
+- React.js frontend for displaying business listings.
+- Interactive charts for data visualization.
+- Search and filtering functionality.
+
+## 🛠️ Technology Stack
+
+### Frontend
 - React.js
 - Vite
 - Recharts
+- JavaScript
 - CSS
 
-**Backend**
+### Backend
 - Python
 - FastAPI
 - SQLAlchemy
-- PyMySQL
+- Uvicorn
+- Requests
 
-**Database**
-- MySQL
+### Database
+- MySQL 8.4
 
-## Features
+### Data Source
+- OpenStreetMap (OSM)
+- Overpass API
 
-- Dashboard with total listing statistics.
-- City-wise business listing chart.
-- Category-wise pie chart.
-- Source-wise listing summary.
-- Search businesses by name, category, or city.
-- Bulk insert API.
-- MySQL database integration.
+## 📊 Data Collection
 
-## Project Structure
+Business listing records are collected from OpenStreetMap using the Overpass API.
+
+The Python import script retrieves available map features with business-related tags, including:
+
+- Shop
+- Amenity
+- Office
+- Tourism
+- Craft
+
+### Current Dataset
+
+| Details | Information |
+|---|---|
+| Data Source | OpenStreetMap |
+| Total Imported Records | 4,482 |
+| Database | MySQL |
+| Database Table | listing_master |
+| Cities | Ahmedabad, Surat |
+| Import Script | backend/scripts/import_osm_data.py |
+
+**Note:** The 4,482 records represent imported OpenStreetMap map features. Not every record necessarily contains a phone number or complete address. The dataset has not been independently verified as a complete list of active businesses.
+
+## 📁 Project Structure
 
 ```text
 Business-Listings-Dashboard/
+│
 ├── backend/
 │   ├── app/
-│   ├── scraper/
 │   ├── scripts/
+│   │   ├── generate_sample_data.py
+│   │   └── import_osm_data.py
+│   ├── .env.example
 │   └── requirements.txt
+│
 ├── frontend/
 │   ├── src/
-│   └── package.json
+│   ├── public/
+│   ├── package.json
+│   └── index.html
+│
 ├── database/
-│   ├── listing_master.sql
 │   └── business_dashboard.sql
-├── .gitignore
+│
 └── README.md
 ```
 
-## Installation and Setup
+## ⚙️ Installation and Setup
 
 ### 1. Clone Repository
 
@@ -57,7 +96,26 @@ git clone https://github.com/gautam446/Business-Listings-Dashboard.git
 cd Business-Listings-Dashboard
 ```
 
-### 2. Database Setup
+### 2. Backend Setup
+
+```bash
+cd backend
+python -m venv venv
+```
+
+Activate virtual environment on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Database Configuration
 
 Create a MySQL database:
 
@@ -65,35 +123,35 @@ Create a MySQL database:
 CREATE DATABASE business_dashboard;
 ```
 
-Import the SQL file:
+Import the database backup:
 
 ```bash
 mysql -u root -p business_dashboard < database/business_dashboard.sql
 ```
 
-### 3. Backend Setup
+Configure your database connection in the backend `.env` file using the provided `.env.example` as a reference.
 
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-pip install cryptography
-```
+### 4. Run Backend
 
-Create a `.env` file using `.env.example` and configure your MySQL connection.
-
-Start FastAPI:
+From the backend directory:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
+Backend API:
+
+```text
+http://127.0.0.1:8000
+```
+
 API Documentation:
 
+```text
 http://127.0.0.1:8000/docs
+```
 
-### 4. Frontend Setup
+### 5. Frontend Setup
 
 Open another terminal:
 
@@ -103,46 +161,60 @@ npm install
 npm run dev
 ```
 
-Open:
+Frontend:
 
+```text
 http://localhost:5173
+```
 
-## API Endpoints
+## 📈 Dashboard Features
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | /api/listings/bulk | Insert multiple listings |
-| GET | /api/listings | Get business listings |
-| GET | /api/dashboard/summary | Dashboard summary |
-| GET | /api/dashboard/city-wise | City-wise statistics |
-| GET | /api/dashboard/category-wise | Category-wise statistics |
-| GET | /api/dashboard/source-wise | Source-wise statistics |
+- Business listing management
+- City-wise business statistics
+- Category-wise statistics
+- Source-wise statistics
+- Interactive Bar Charts
+- Interactive Pie Charts
+- Business search and filtering
+- REST API integration
 
-## Data Collection
+## 🔌 API Features
 
-This project currently includes 600 synthetic demo records generated for testing the dashboard and database functionality.
+The FastAPI backend provides endpoints for:
 
-These records are not real businesses and have not been scraped from Google Maps, Justdial, or other business directories.
+- Bulk inserting business records
+- Retrieving business listings
+- Dashboard statistics
+- City-wise counts
+- Category-wise counts
+- Source-wise counts
 
-A basic HTML scraper is included for static HTML pages that the user owns or has permission to scrape. Actual real-world data collection is not included in the current demo dataset.
+Visit `/docs` to explore available API endpoints.
 
-## Challenges
+## 🌍 OpenStreetMap Attribution
 
-- Connecting FastAPI with MySQL.
-- Configuring MySQL authentication.
-- Integrating React with FastAPI.
-- Displaying database statistics using charts.
-- Implementing business listing search.
+This project uses data from OpenStreetMap contributors.
 
-## Future Improvements
+© OpenStreetMap contributors.
 
-- Collect real business listings from permitted sources.
-- Add pagination and advanced filters.
-- Improve data validation.
-- Deploy the application online.
+OpenStreetMap data is available under the Open Database License (ODbL).
 
-## Author
+Data source: https://www.openstreetmap.org/
 
-Gautam Parmar
+Overpass API: https://overpass-api.de/
+
+## ⚠️ Data Disclaimer
+
+OpenStreetMap data is community-maintained and may contain incomplete, outdated, or missing information.
+
+The imported records are presented as available in OpenStreetMap. No independent verification of every business listing has been performed.
+
+## 👨‍💻 Developer
+
+**Gautam Parmar**
 
 GitHub: https://github.com/gautam446
+
+## 📄 License
+
+This project is developed for educational and internship assignment purposes.
